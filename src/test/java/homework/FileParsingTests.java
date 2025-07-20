@@ -83,7 +83,7 @@ public class FileParsingTests {
     }
 
     @Test
-    void jsonFileShouldBeValid() throws Exception {
+    void jsonFileShouldBeValidTest() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
 
         try (InputStream is = cl.getResourceAsStream("clients.json")) {
