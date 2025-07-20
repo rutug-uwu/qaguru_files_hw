@@ -1,0 +1,16 @@
+{
+  "clients": [
+    {
+      "id": 1,
+      "name": "Иван Иванов",
+      "accountBalance": 1500,
+      "accountType": "Savings"
+    },
+    {
+      "id": 2,
+      "name": "Мария Петрова",
+      "accountBalance": 3200,
+      "accountType": "Checking"
+    }
+  ]
+}

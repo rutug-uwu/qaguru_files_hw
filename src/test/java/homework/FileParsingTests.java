@@ -2,18 +2,21 @@ package homework;
 
 import com.codeborne.pdftest.PDF;
 import com.codeborne.xlstest.XLS;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.opencsv.CSVReader;
 import lecture.FileParsingTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FileParsingTests {
 
@@ -28,7 +31,7 @@ public class FileParsingTests {
             while ((entry = zis.getNextEntry()) != null) {
                 if (entry.getName().endsWith(".pdf")) {
                     PDF pdf = new PDF(zis);
-                    assertEquals("Евгений Зуев", pdf.author);
+                    Assertions.assertEquals("Евгений Зуев", pdf.author);
                     break;
                 }
             }
@@ -79,4 +82,26 @@ public class FileParsingTests {
         }
     }
 
+    @Test
+    void jsonFileShouldBeLoadedAndValid() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+
+        try (InputStream is = cl.getResourceAsStream("clients.json")) {
+
+            JsonNode root = mapper.readTree(is);
+            JsonNode clients = root.get("clients");
+
+            JsonNode firstClient = clients.get(0);
+            Assertions.assertEquals(1, firstClient.get("id").asInt());
+            Assertions.assertEquals("Иван Иванов", firstClient.get("name").asText());
+            Assertions.assertEquals(1500, firstClient.get("accountBalance").asInt());
+            Assertions.assertEquals("Savings", firstClient.get("accountType").asText());
+
+            JsonNode secondClient = clients.get(1);
+            Assertions.assertEquals(2, secondClient.get("id").asInt());
+            Assertions.assertEquals("Мария Петрова", secondClient.get("name").asText());
+            Assertions.assertEquals(3200, secondClient.get("accountBalance").asInt());
+            Assertions.assertEquals("Checking", secondClient.get("accountType").asText());
+        }
+    }
 }
