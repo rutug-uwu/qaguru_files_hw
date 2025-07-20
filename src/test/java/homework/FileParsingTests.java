@@ -82,6 +82,7 @@ public class FileParsingTests {
         }
     }
 
+    @DisplayName("Проверка содержимого JSON-файла")
     @Test
     void jsonFileShouldBeValidTest() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
